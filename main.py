@@ -117,12 +117,24 @@ def secrets():
     search = request.args.get('search')
     response = GetInvoice.get_all_invoices()
     invoices = []
+    more_than_ten_days = []
+    no_of_days = []
+    today = datetime.today()
     for invoice in response:
         if invoice.total_amount['status'] == "pending":
             invoices.append(invoice)
+            days_diff = (today.date() - invoice.date).days
+
+            if days_diff >= 10:
+                more_than_ten_days.append(invoice)
+                no_of_days.append(days_diff)
+    print(more_than_ten_days)
+    print(no_of_days)
+    zipped_data = zip(more_than_ten_days, no_of_days)
 
 
-    return render_template("home.html", name=current_user.name, logged_in=True, invoices=invoices, search=search, stock=stock, daily_tins_count=daily_tins_count, card="pending")
+
+    return render_template("home.html", name=current_user.name, logged_in=True, invoices=invoices, search=search, stock=stock, daily_tins_count=daily_tins_count, card="pending", more_than_ten_days=more_than_ten_days, no_of_days=no_of_days, zipped_data=zipped_data)
 
 
 @app.route('/logout')

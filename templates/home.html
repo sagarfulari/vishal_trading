@@ -116,7 +116,7 @@
 
 
 
-<!-- Pending invoice card -->
+<!-- more than 10 days Pending invoice card -->
 {% if card == "pending" %}
 <div class="delay_card mb-6 mb-xxl-0">
   <div class="card-header">
@@ -137,7 +137,7 @@
         <th class="fs-sm">Date</th>
       </tr></thead>
       <tbody>
-      {% for invoice in invoices: %}
+      {% for invoice, days in zipped_data: %}
         <tr>
           <td>
             <div class="d-flex align-items-center">
@@ -149,7 +149,7 @@
             </div>
           </td>
           <td>
-                <span class="badge bg-danger-subtle text-danger">10</span>
+                <span class="badge bg-danger-subtle text-danger">{{ days }}</span>
           </td>
           <td>
             <label>{{ invoice.total_amount['overall_amount'] }}</label>
